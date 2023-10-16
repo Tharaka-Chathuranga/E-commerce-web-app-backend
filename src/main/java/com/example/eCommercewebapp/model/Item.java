@@ -8,7 +8,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "Items")
-@AllArgsConstructor
 @NoArgsConstructor
 public class Item {
     @Id
@@ -31,16 +30,33 @@ public class Item {
     @Column(name = "details", nullable = false)
     private String details;
 
+    @Column(name = "discount",nullable = false)
+    private String discount;
+
+    @Column(name="catageory", nullable = false)
+    private String catageory;
+
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
-    private List<Order> order;
+    private List<Order> orders;
 
-    public Long getId() {
-        return id;
+    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
+    private Inventory inventory;
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
     }
+
+//    public Long getId() {
+//        return id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getName() {
         return name;
@@ -75,10 +91,27 @@ public class Item {
     }
 
     public List<Order> getOrders() {
-        return order;
+        return orders;
     }
 
     public void setOrders(List<Order> orders) {
-        this.order = order;
+        this.orders = orders;
     }
+
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+    public String getCatageory() {
+        return catageory;
+    }
+
+    public void setCatageory(String catageory) {
+        this.catageory = catageory;
+    }
+
 }
