@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin( "http://localhost:5173")
 public class AuthenticationController {
     private UserService userService;
     @Autowired
@@ -24,6 +25,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity registerUser(@Valid @RequestBody RegistrationBody registrationBody){
+        System.out.println(registrationBody);
         try {
             userService.registerUser(registrationBody);
             return ResponseEntity.ok().build();
@@ -32,9 +34,9 @@ public class AuthenticationController {
         }
 
     }
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginBody loginBody){
-
+        System.out.println(loginBody);
         String jwt = userService.loginUser(loginBody);
         if (jwt==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

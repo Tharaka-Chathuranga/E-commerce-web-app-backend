@@ -38,6 +38,7 @@ public class UserService {
     }
 
     public String loginUser(LoginBody loginBody){
+        System.out.println(loginBody);
         Optional<User> luser = userDAO.findByEmailIgnoreCase(loginBody.getUsername());
         if (luser.isPresent()){
             User user = luser.get();

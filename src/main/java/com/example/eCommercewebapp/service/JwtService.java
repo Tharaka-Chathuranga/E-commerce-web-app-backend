@@ -2,6 +2,7 @@ package com.example.eCommercewebapp.service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.example.eCommercewebapp.model.User;
 
 import jakarta.annotation.PostConstruct;
@@ -18,14 +19,32 @@ public class JwtService {
     private String issuer;
 
     @Value("${expiryInSeconds}")
-    private int expiryInSeconds;
+    private long expiryInSeconds;
 
     private Algorithm algorithm;
     private  static final String USERNAME_KEY="USERNAME";
+    private static final String RESET_PASSWORD_EMAIL_KEY= "RESET_PASSWORD_EMAIL";
 
     @PostConstruct
     public void postConstruct(){
         algorithm=Algorithm.HMAC256(algorithmkey);
+    }
+
+
+    public String generatePasswordResetJWT(User user){
+        return JWT.create()
+                .withClaim(RESET_PASSWORD_EMAIL_KEY,user.getEmail())
+                .withExpiresAt(new Date(System.currentTimeMillis()+(1000*50*30)))
+                .withIssuer(issuer)
+                .sign(algorithm);
+
+    }
+
+    public String getResetPasswordEmail(String token){
+
+        DecodedJWT jwt = JWT.require(algorithm).build().verify(token);
+
+        return jwt.getClaim(RESET_PASSWORD_EMAIL_KEY).asString();
     }
 
 
@@ -39,6 +58,9 @@ public class JwtService {
     }
 
         public String getUsername(String token){
-        return JWT.decode(token).getClaim(USERNAME_KEY).asString();
+
+        DecodedJWT jwt = JWT.require(algorithm).build().verify(token);
+
+        return jwt.getClaim(USERNAME_KEY).asString();
     }
 }

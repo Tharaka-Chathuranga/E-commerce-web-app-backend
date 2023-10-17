@@ -9,6 +9,7 @@ import java.util.List;
 @Entity
 @Table(name = "Items")
 @NoArgsConstructor
+
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +37,12 @@ public class Item {
     @Column(name="catageory", nullable = false)
     private String catageory;
 
+
+
+    @Lob
+    @Column(name="image")
+    private byte[] image;
+
     @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
     private List<Order> orders;
 
@@ -50,13 +57,22 @@ public class Item {
         this.inventory = inventory;
     }
 
-//    public Long getId() {
-//        return id;
-//    }
-//
-//    public void setId(Long id) {
-//        this.id = id;
-//    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
 
     public String getName() {
         return name;

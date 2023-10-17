@@ -24,7 +24,7 @@ public class RegistrationBody {
     private String address;
     @NotNull
     @NotBlank
-    private String role;
+    private String role = "customer";
 
     public String getRole() {
         return role;
