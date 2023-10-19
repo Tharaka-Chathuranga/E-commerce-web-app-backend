@@ -34,6 +34,7 @@ public class User {
     @Column(name = "address", nullable = false)
     private String address;
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> order;
     public String getAddress() {
