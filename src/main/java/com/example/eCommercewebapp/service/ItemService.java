@@ -33,8 +33,6 @@ public class ItemService {
        item.setDetails(itemBody.getDetails());
        item.setDiscount(itemBody.getDiscount());
        item.setPrice(itemBody.getPrice());
-
-
        itemDAO.save(item);
        return item;
     }

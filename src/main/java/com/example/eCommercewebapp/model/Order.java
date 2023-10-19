@@ -1,15 +1,19 @@
 package com.example.eCommercewebapp.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.NoArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import java.time.LocalDate;
 
-import java.util.Date;
+
 
 @Entity
-@Table(name = "Orders")
+@Table(name = "orders")
 @RequiredArgsConstructor
-
+@Getter
+@Setter
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,63 +24,19 @@ public class Order {
     private String status;
 
     @Column(name = "order_date", nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(name = "quantity", nullable = false)
     private long quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JsonBackReference
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "item_id", nullable = false)
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Item item;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    public Long getId() {
-        return id;
-    }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-       public long getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(long quantity) {
-        this.quantity = quantity;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Item getItem() {
-        return item;
-    }
-
-    public void setItem(Item item) {
-        this.item = item;
-    }
 }

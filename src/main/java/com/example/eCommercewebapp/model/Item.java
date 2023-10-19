@@ -1,15 +1,19 @@
 package com.example.eCommercewebapp.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "Items")
 @NoArgsConstructor
-
+@Getter
+@Setter
 public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,97 +41,13 @@ public class Item {
     @Column(name="catageory", nullable = false)
     private String catageory;
 
-
-
-    @Lob
-    @Column(name="image")
-    private byte[] image;
-
-    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL)
+    @OneToMany( cascade = CascadeType.ALL)
+    @JoinColumn
+    @JsonManagedReference
     private List<Order> orders;
 
     @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
     private Inventory inventory;
 
-    public Inventory getInventory() {
-        return inventory;
-    }
-
-    public void setInventory(Inventory inventory) {
-        this.inventory = inventory;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public byte[] getImage() {
-        return image;
-    }
-
-    public void setImage(byte[] image) {
-        this.image = image;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getBrand() {
-        return brand;
-    }
-
-    public void setBrand(String brand) {
-        this.brand = brand;
-    }
-
-    public String getPrice() {
-        return price;
-    }
-
-    public void setPrice(String price) {
-        this.price = price;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public List<Order> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
-
-
-    public String getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(String discount) {
-        this.discount = discount;
-    }
-    public String getCatageory() {
-        return catageory;
-    }
-
-    public void setCatageory(String catageory) {
-        this.catageory = catageory;
-    }
 
 }

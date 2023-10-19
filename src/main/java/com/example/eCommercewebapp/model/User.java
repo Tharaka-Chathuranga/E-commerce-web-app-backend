@@ -1,14 +1,19 @@
 package com.example.eCommercewebapp.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 import java.util.List;
 
 @Entity
 @Table(name = "users")
 @RequiredArgsConstructor
+@Getter
+@Setter
 
 public class User {
     @Id
@@ -34,63 +39,10 @@ public class User {
     @Column(name = "address", nullable = false)
     private String address;
 
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Order> order;
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
-    }
-
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
+    @OneToMany( cascade = CascadeType.ALL)
+    @JoinColumn
+    @JsonManagedReference
+    private List<Order> orders;
 
 
-
-    public Long getId() {
-        return id;
-    }
-        public String getFirstname() {
-        return firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getRole() {
-        return role;
-    }
 }
