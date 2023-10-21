@@ -41,10 +41,7 @@ public class Item {
     @Column(name="catageory", nullable = false)
     private String catageory;
 
-    @OneToMany( cascade = CascadeType.ALL)
-    @JoinColumn
-    @JsonManagedReference
-    private List<Order> orders;
+
 
     @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
     private Inventory inventory;

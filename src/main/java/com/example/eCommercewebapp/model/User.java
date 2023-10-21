@@ -1,20 +1,19 @@
 package com.example.eCommercewebapp.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-
+import java.time.LocalDate;
 import java.util.List;
+
 
 @Entity
 @Table(name = "users")
-@RequiredArgsConstructor
 @Getter
 @Setter
-
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +29,7 @@ public class User {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @JsonIgnore
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -39,10 +39,13 @@ public class User {
     @Column(name = "address", nullable = false)
     private String address;
 
-    @OneToMany( cascade = CascadeType.ALL)
-    @JoinColumn
-    @JsonManagedReference
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Order> orders;
+
+    @OneToOne(cascade = CascadeType.ALL)
+   @JoinColumn(name = "file_data_id")
+    private FileData fileData;
 
 
 }

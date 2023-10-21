@@ -3,7 +3,9 @@ package com.example.eCommercewebapp.service;
 import com.example.eCommercewebapp.api.model.LoginBody;
 import com.example.eCommercewebapp.api.model.RegistrationBody;
 import com.example.eCommercewebapp.exception.UserAlreadyExistsException;
+import com.example.eCommercewebapp.model.FileData;
 import com.example.eCommercewebapp.model.User;
+import com.example.eCommercewebapp.model.dao.FileDataDAO;
 import com.example.eCommercewebapp.model.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,11 +17,14 @@ public class UserService {
     private JwtService jwtService;
     private EncryptionService encryptionService;
     private UserDAO userDAO;
+
+    private FileDataDAO fileDataDAO;
     @Autowired
-    public UserService(JwtService jwtService, EncryptionService encryptionService, UserDAO userDAO) {
+    public UserService(JwtService jwtService, EncryptionService encryptionService, UserDAO userDAO, FileDataDAO fileDataDAO) {
         this.jwtService = jwtService;
         this.encryptionService = encryptionService;
         this.userDAO = userDAO;
+        this.fileDataDAO = fileDataDAO;
     }
 
     public User registerUser(RegistrationBody registrationBody) throws UserAlreadyExistsException {
@@ -38,8 +43,9 @@ public class UserService {
     }
 
     public String loginUser(LoginBody loginBody){
-        System.out.println(loginBody);
+
         Optional<User> luser = userDAO.findByEmailIgnoreCase(loginBody.getUsername());
+        System.out.println(luser.isPresent());
         if (luser.isPresent()){
             User user = luser.get();
             if(encryptionService.verifyPassword(loginBody.getPassword(),user.getPassword())){
@@ -48,4 +54,13 @@ public class UserService {
         }
         return null;
     }
+
+    public User addProfilePhoto(User user, FileData fileData){
+        FileData exsistingFileData = fileDataDAO.findById(fileData.getId()).get();
+        System.out.println(exsistingFileData);
+        User exsistingUser = userDAO.findById(user.getId()).get();
+        exsistingUser.setFileData(exsistingFileData);
+        userDAO.save(exsistingUser);
+
+    return exsistingUser;}
 }

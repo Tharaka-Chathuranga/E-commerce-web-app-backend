@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 @Getter
 @Setter
+
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,14 +30,13 @@ public class Order {
     @Column(name = "quantity", nullable = false)
     private long quantity;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
-
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "item_id")
     private Item item;
 
-
-
 }
+

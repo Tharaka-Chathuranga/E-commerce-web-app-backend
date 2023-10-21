@@ -14,7 +14,7 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    private OrderDAO orderDAO;
+    private final OrderDAO orderDAO;
     @Autowired
     public OrderService(OrderDAO orderDAO) {
         this.orderDAO = orderDAO;
@@ -27,7 +27,6 @@ public class OrderService {
     public Order createOrder(User user, OrderBody orderBody){
         LocalDate localDate = LocalDate.now();
         Order order = new Order();
-        order.setUser(user);
         order.setStatus(orderBody.getStatus());
         order.setItem(orderBody.getItem());
         order.setQuantity(orderBody.getQuantity());

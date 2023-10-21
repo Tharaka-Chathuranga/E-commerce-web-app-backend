@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 public class ItemService {
 
-    private ItemDAO itemDAO;
+    private final ItemDAO itemDAO;
     @Autowired
     public ItemService(ItemDAO itemDAO) {
         this.itemDAO = itemDAO;

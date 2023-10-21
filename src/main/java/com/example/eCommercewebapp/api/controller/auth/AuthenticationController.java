@@ -4,6 +4,7 @@ import com.example.eCommercewebapp.api.model.LoginBody;
 import com.example.eCommercewebapp.api.model.LoginResponse;
 import com.example.eCommercewebapp.api.model.RegistrationBody;
 import com.example.eCommercewebapp.exception.UserAlreadyExistsException;
+import com.example.eCommercewebapp.model.FileData;
 import com.example.eCommercewebapp.model.User;
 import com.example.eCommercewebapp.service.UserService;
 import jakarta.validation.Valid;
@@ -36,8 +37,9 @@ public class AuthenticationController {
     }
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> loginUser(@Valid @RequestBody LoginBody loginBody){
-        System.out.println(loginBody);
+
         String jwt = userService.loginUser(loginBody);
+         System.out.println(jwt);
         if (jwt==null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         } else{
@@ -50,6 +52,12 @@ public class AuthenticationController {
     @GetMapping("/me")
     public User getLoggedInUserProfile(@AuthenticationPrincipal User user){
         return user;
+    }
+
+    @PutMapping("/addProfilePhoto")
+    public User addProfilePhoto(@AuthenticationPrincipal User user, FileData fileData){
+        System.out.println(user.getId());
+        return userService.addProfilePhoto(user,fileData);
     }
 
 }

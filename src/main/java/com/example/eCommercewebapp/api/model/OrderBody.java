@@ -5,12 +5,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
 public class OrderBody {
     private long quantity;
-    private Item  item;
+    private Item item;
     private String status;
 
 }
