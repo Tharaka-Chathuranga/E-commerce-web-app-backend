@@ -3,8 +3,10 @@ package com.example.eCommercewebapp.service;
 
 import com.example.eCommercewebapp.model.FileData;
 import com.example.eCommercewebapp.model.ImageData;
+import com.example.eCommercewebapp.model.Item;
 import com.example.eCommercewebapp.model.User;
 import com.example.eCommercewebapp.model.dao.FileDataDAO;
+import com.example.eCommercewebapp.model.dao.ItemDAO;
 import com.example.eCommercewebapp.model.dao.StorageDAO;
 import com.example.eCommercewebapp.model.dao.UserDAO;
 import com.example.eCommercewebapp.model.util.ImageUtils;
@@ -28,11 +30,17 @@ public class StorageService {
 
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private ItemDAO itemDAO;
 
-    public StorageService(StorageDAO storageDAO, FileDataDAO fileDataDAO, UserDAO userDAO) {
+    public StorageService(StorageDAO storageDAO,
+                          FileDataDAO fileDataDAO,
+                          UserDAO userDAO,
+                          ItemDAO itemDAO) {
         this.storageDAO = storageDAO;
         this.fileDataDAO = fileDataDAO;
         this.userDAO = userDAO;
+        this.itemDAO = itemDAO;
     }
 
     private final String FOLDER_PATH = System.getProperty("user.dir") + "/src/main/resources/images/";
@@ -58,7 +66,8 @@ public class StorageService {
 //    }
 
 
-    public FileData uploadImageToFileSystem(MultipartFile file, User user) throws IOException {
+    public FileData uploadImageToFileSystem(MultipartFile file, User user,String relation) throws IOException {
+
         String filePath=FOLDER_PATH+file.getOriginalFilename();
         FileData fileData= fileDataDAO.save(FileData.builder()
                 .name(file.getOriginalFilename())
@@ -67,14 +76,50 @@ public class StorageService {
 
         file.transferTo(new File(filePath));
 
-        if (fileData != null) {
+        if (relation.equalsIgnoreCase("user")){
+
+            if (fileData != null) {
             User exsistingUser = userDAO.findById(user.getId()).get();
             exsistingUser.setFileData(fileData);
             userDAO.save(exsistingUser);
             return fileData;
+            }
+            else{
+                return null;
+            }
+
         }
+        else if (relation.substring(0,4).equalsIgnoreCase("item")){
+
+                if (fileData != null) {
+                Optional<Item> optionalItem = itemDAO.findById(Long.parseLong(relation.substring(4)));
+
+
+                if (optionalItem.isPresent()) {
+                    Item existingItem = optionalItem.get();
+                    System.out.println(existingItem);
+                    existingItem.setFileData(fileData);
+                    itemDAO.save(existingItem);
+
+                    return fileData;
+                }
+                else {
+                    return null;
+                }
+
+            }
+            else{
+
+                return null;
+            }
+
+        }
+
+
         return null;
     }
+
+
 
     public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
         Optional<FileData> fileData = fileDataDAO.findByName(fileName);

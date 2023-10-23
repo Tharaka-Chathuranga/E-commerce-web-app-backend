@@ -48,6 +48,8 @@ public class Item {
     @OneToMany(mappedBy = "item")
     private List<Order> Orders;
 
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "file_data_id")
+    private FileData fileData;
 
 }

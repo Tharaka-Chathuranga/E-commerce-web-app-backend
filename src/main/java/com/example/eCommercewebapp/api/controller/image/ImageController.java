@@ -39,11 +39,20 @@ public class ImageController {
 
 
 	@PostMapping("/fileSystem")
-	public ResponseEntity<?> uploadImageToFIleSystem(@AuthenticationPrincipal User user, @RequestParam("image")MultipartFile file) throws IOException {
-		FileData uploadImage = service.uploadImageToFileSystem(file,user);
+	public ResponseEntity<?> uploadImageToFIleSystem(
+			@AuthenticationPrincipal User user,
+			@RequestParam("image")MultipartFile file,
+			@RequestParam("relation")String relation) throws IOException {
+
+
+
+		FileData uploadImage = service.uploadImageToFileSystem(file,user,relation);
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(uploadImage);
 	}
+
+
+
 
 	@PostMapping("/fileSystem/deleteUserImage")
 	public ResponseEntity<?> deleteImageUser(@AuthenticationPrincipal User user) throws IOException {
