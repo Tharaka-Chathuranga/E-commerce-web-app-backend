@@ -1,5 +1,6 @@
 package com.example.eCommercewebapp.api.model;
 
+import com.example.eCommercewebapp.model.Item;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,6 +14,8 @@ public class ItemBody {
     private String discount;
     private String catageory;
     private String details;
-    private byte[] image;
+    private long quantity;
+
+
 
 }

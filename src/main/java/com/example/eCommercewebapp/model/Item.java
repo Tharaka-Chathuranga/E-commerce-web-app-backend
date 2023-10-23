@@ -1,6 +1,6 @@
 package com.example.eCommercewebapp.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,7 +26,7 @@ public class Item {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "brand", nullable = false)
+    @Column(name = "brand")
     private String brand;
 
     @Column(name = "price", nullable = false)
@@ -38,13 +38,16 @@ public class Item {
     @Column(name = "discount",nullable = false)
     private String discount;
 
-    @Column(name="catageory", nullable = false)
+    @Column(name="catageory")
     private String catageory;
 
+    @Column(name = "quantity", nullable = false)
+    private long quantity;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "item")
+    private List<Order> Orders;
 
-    @OneToOne(mappedBy = "item", cascade = CascadeType.ALL)
-    private Inventory inventory;
 
 
 }

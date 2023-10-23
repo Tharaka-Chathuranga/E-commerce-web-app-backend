@@ -26,15 +26,11 @@ public class ItemController {
     }
 
     @PostMapping("/createItem")
-    public ResponseEntity createItem(@AuthenticationPrincipal User user, @RequestParam("image") MultipartFile image, @Valid @RequestBody ItemBody itemBody){
+    public ResponseEntity createItem(@AuthenticationPrincipal User user, @Valid @RequestBody ItemBody itemBody){
         System.out.println(user.getRole());
         if (user.getRole().equalsIgnoreCase("admin")){
             try {
-                try {
-                    itemBody.setImage(image.getBytes());
-                } catch (IOException e) {
-                  return ResponseEntity.status(HttpStatus.CONFLICT).build();
-                }
+
                 itemService.createItem(itemBody);
 
                 return ResponseEntity.ok().build();

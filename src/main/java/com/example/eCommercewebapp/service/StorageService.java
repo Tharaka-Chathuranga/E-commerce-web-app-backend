@@ -60,7 +60,6 @@ public class StorageService {
 
     public FileData uploadImageToFileSystem(MultipartFile file, User user) throws IOException {
         String filePath=FOLDER_PATH+file.getOriginalFilename();
-
         FileData fileData= fileDataDAO.save(FileData.builder()
                 .name(file.getOriginalFilename())
                 .type(file.getContentType())
