@@ -10,6 +10,7 @@ import java.util.Set;
 @Getter
 @Setter
 public class OrderBody {
+    private long id;
     private long quantity;
     private Item item;
     private String status;

@@ -46,6 +46,11 @@ public class ItemController {
 
     }
 
+//    @GetMapping("/catageory/{catageoryName}")
+//    public List<Item> getCatageoryList(@PathVariable String catageoryName){
+//        return
+//    }
+
     @GetMapping("/getAllItems")
     public List<Item> getAllItems(){
 

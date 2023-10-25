@@ -29,7 +29,6 @@ public class OrderService {
 
     public Order createOrder(User user, OrderBody orderBody) {
 
-//        Optional<User> loadUser = userDAO.findByEmailIgnoreCase(user.getEmail());
         User exsistingUser = userDAO.findById(user.getId()).get();
         Order newOrder = orderDAO.save(Order.builder()
                 .status(orderBody.getStatus())
@@ -47,23 +46,41 @@ public class OrderService {
         return null;
     }
 
-//        if (loadUser.isPresent()){
-//            User exsistingUser = loadUser.get();
-//            LocalDate localDate = LocalDate.now();
-//            Order order = new Order();
-//            order.setStatus(orderBody.getStatus());
-//            order.setItem(orderBody.getItem());
-//            order.setQuantity(orderBody.getQuantity());
-//            order.setDate(localDate);
-//            exsistingUser.getOrders().add(order);
-//            orderDAO.save(order);
-//
-//            return order;
-//        }
-//        return null;
+   public Order changeOrderStatus(User user, OrderBody orderBody) {
+    Order existingOrder = orderDAO.findById(orderBody.getId()).orElse(null);
 
+    if (existingOrder == null) {
+        return null;
+    }
 
+    if ("admin".equals(user.getRole())) {
+        existingOrder.setStatus(orderBody.getStatus());
+    } else if ("customer".equals(user.getRole())) {
+        existingOrder.setStatus(orderBody.getStatus());
+        existingOrder.setQuantity(orderBody.getQuantity());
+    } else {
+        return null;
+    }
 
+    orderDAO.save(existingOrder);
+    return existingOrder;
+
+    }
+
+public Order deleteUserOrder(User user, OrderBody orderBody) {
+    System.out.println(orderBody.getId());
+    // Find the existing order by ID
+    Order existingOrder = orderDAO.findById(orderBody.getId()).orElse(null);
+
+    if (existingOrder != null) {
+        // Delete the existing order from the database
+        orderDAO.delete(existingOrder);
+        return existingOrder;
+    } else {
+        // Order not found, return null
+        return null;
+    }
+}
 
 
 

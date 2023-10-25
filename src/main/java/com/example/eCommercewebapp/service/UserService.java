@@ -2,6 +2,7 @@ package com.example.eCommercewebapp.service;
 
 import com.example.eCommercewebapp.api.model.LoginBody;
 import com.example.eCommercewebapp.api.model.RegistrationBody;
+import com.example.eCommercewebapp.api.model.UserDetailsEditBody;
 import com.example.eCommercewebapp.exception.UserAlreadyExistsException;
 import com.example.eCommercewebapp.model.FileData;
 import com.example.eCommercewebapp.model.User;
@@ -62,5 +63,23 @@ public class UserService {
         exsistingUser.setFileData(exsistingFileData);
         userDAO.save(exsistingUser);
 
-    return exsistingUser;}
+    return exsistingUser;
+    }
+
+    public User editUserDetails(User user, UserDetailsEditBody userDetailsEditBody){
+        User exsistingUser = userDAO.findById(user.getId()).get();
+
+        if (exsistingUser == null){
+            return null;
+        }
+        else{
+            exsistingUser.setFirstname(userDetailsEditBody.getFirstname());
+            exsistingUser.setLastname(userDetailsEditBody.getLastname());
+            exsistingUser.setEmail(userDetailsEditBody.getUsername());
+            exsistingUser.setAddress(userDetailsEditBody.getAddress());
+
+            userDAO.save(exsistingUser);
+            return exsistingUser;
+        }
+    }
 }
