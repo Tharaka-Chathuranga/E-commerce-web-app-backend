@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ItemService {
@@ -29,7 +30,7 @@ public class ItemService {
        Item item = new Item();
        item.setName(itemBody.getName());
        item.setBrand(itemBody.getBrand());
-       item.setCatageory(itemBody.getCatageory());
+       item.setCategory(itemBody.getCategory());
        item.setDetails(itemBody.getDetails());
        item.setDiscount(itemBody.getDiscount());
        item.setPrice(itemBody.getPrice());
@@ -37,4 +38,16 @@ public class ItemService {
        itemDAO.save(item);
        return item;
     }
+
+     public List<Item> getCatageoryList( String category ){
+       Optional<List<Item>> optionalItems =  itemDAO.findByCategory(category);
+       if (optionalItems != null){
+           List<Item> categoryList = optionalItems.get();
+           return categoryList;
+       }
+       else{
+           return null;
+       }
+    }
+
 }

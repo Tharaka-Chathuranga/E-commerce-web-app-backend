@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/order")
+@CrossOrigin( "http://localhost:5173")
 public class OrderController {
 
     private final OrderService orderService;
@@ -24,8 +25,9 @@ public class OrderController {
 
     @PostMapping("/createOrder")
     public Order createOrder(@AuthenticationPrincipal User user ,@RequestBody OrderBody orderBody){
+        Order order = orderService.createOrder(user, orderBody);
 
-        return orderService.createOrder(user, orderBody);
+        return order;
     }
     @DeleteMapping("/deleteUserOrder")
     public Order deleteUserOrder(@AuthenticationPrincipal User user, @RequestBody @Valid OrderBody orderBody){
@@ -49,4 +51,17 @@ public class OrderController {
 
         }
     }
+//    @PutMapping("/changeAllStatus")
+//    public ResponseEntity<List<Order>> changeAllStatus(
+//        @AuthenticationPrincipal User user,
+//        @RequestBody List<OrderBody> orderBodyList
+//    ) {
+//        List<Order> updatedOrders = orderService.changeAllStatus(user, orderBodyList);
+//
+//        if (updatedOrders.isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+//        } else {
+//            return ResponseEntity.ok(updatedOrders);
+//        }
+//    }
 }

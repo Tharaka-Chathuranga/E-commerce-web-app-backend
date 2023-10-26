@@ -16,6 +16,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/image")
+@CrossOrigin( "http://localhost:5173")
 public class ImageController {
 
 	@Autowired
@@ -38,7 +39,7 @@ public class ImageController {
 //	}
 
 
-	@PostMapping("/fileSystem")
+		@PostMapping("/fileSystem")
 	public ResponseEntity<?> uploadImageToFIleSystem(
 			@AuthenticationPrincipal User user,
 			@RequestParam("image")MultipartFile file,
@@ -56,18 +57,27 @@ public class ImageController {
 
 	@PostMapping("/fileSystem/deleteUserImage")
 	public ResponseEntity<?> deleteImageUser(@AuthenticationPrincipal User user) throws IOException {
-		User currentUser = new User();
-		currentUser = user;
-		System.out.println(currentUser);
+		System.out.println(user);
 		String response = service.deleteImageUser(user);
 		return ResponseEntity.status(HttpStatus.OK)
 				.body(response);
 
 	}
 
-	@GetMapping("/fileSystem/{fileName}")
-	public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable String fileName) throws IOException {
-		byte[] imageData=service.downloadImageFromFileSystem(fileName);
+	@GetMapping("/fileSystem/{fileId}")
+	public ResponseEntity<?> downloadUserImageFromFileSystem(@AuthenticationPrincipal User user, @PathVariable Long fileId) throws IOException {
+		byte[] imageData=service.downloadImageFromFileSystem(fileId);
+
+		return ResponseEntity.status(HttpStatus.OK)
+				.contentType(MediaType.valueOf("image/png"))
+				.body(imageData);
+
+	}
+
+	@GetMapping("/productFileSystem/{fileId}")
+	public ResponseEntity<?> downloadProductImageFromFileSystem( @PathVariable Long fileId) throws IOException {
+		byte[] imageData=service.downloadImageFromFileSystem(fileId);
+
 		return ResponseEntity.status(HttpStatus.OK)
 				.contentType(MediaType.valueOf("image/png"))
 				.body(imageData);

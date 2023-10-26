@@ -11,6 +11,7 @@ import com.example.eCommercewebapp.model.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -39,7 +40,9 @@ public class UserService {
         user.setAddress(registrationBody.getAddress());
         user.setPassword(encryptionService.encryptPassword(registrationBody.getPassword()));
         user.setRole(registrationBody.getRole());
+        user.setCreatedDate(LocalDate.now());
         userDAO.save(user);
+        System.out.println(user);
         return user;
     }
 
@@ -75,7 +78,6 @@ public class UserService {
         else{
             exsistingUser.setFirstname(userDetailsEditBody.getFirstname());
             exsistingUser.setLastname(userDetailsEditBody.getLastname());
-            exsistingUser.setEmail(userDetailsEditBody.getUsername());
             exsistingUser.setAddress(userDetailsEditBody.getAddress());
 
             userDAO.save(exsistingUser);

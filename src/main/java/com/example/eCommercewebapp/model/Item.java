@@ -26,7 +26,7 @@ public class Item {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "brand")
+    @Column(name = "brand" )
     private String brand;
 
     @Column(name = "price", nullable = false)
@@ -38,8 +38,8 @@ public class Item {
     @Column(name = "discount",nullable = false)
     private String discount;
 
-    @Column(name="catageory")
-    private String catageory;
+    @Column(name="category")
+    private String category;
 
     @Column(name = "quantity", nullable = false)
     private long quantity;

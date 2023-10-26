@@ -25,11 +25,11 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity registerUser(@Valid @RequestBody RegistrationBody registrationBody){
+    public ResponseEntity<User> registerUser(@Valid @RequestBody RegistrationBody registrationBody){
         System.out.println(registrationBody);
         try {
-            userService.registerUser(registrationBody);
-            return ResponseEntity.ok().build();
+            User user = userService.registerUser(registrationBody);
+            return ResponseEntity.ok(user);
         }catch(UserAlreadyExistsException ex){
             return ResponseEntity.status(HttpStatus.CONFLICT).build();
         }

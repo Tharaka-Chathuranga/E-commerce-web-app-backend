@@ -77,9 +77,10 @@ public class StorageService {
         file.transferTo(new File(filePath));
 
         if (relation.equalsIgnoreCase("user")){
-
+            System.out.println(user+"hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
             if (fileData != null) {
             User exsistingUser = userDAO.findById(user.getId()).get();
+
             exsistingUser.setFileData(fileData);
             userDAO.save(exsistingUser);
             return fileData;
@@ -121,8 +122,8 @@ public class StorageService {
 
 
 
-    public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
-        Optional<FileData> fileData = fileDataDAO.findByName(fileName);
+    public byte[] downloadImageFromFileSystem(Long fileId) throws IOException {
+        Optional<FileData> fileData = fileDataDAO.findById(fileId);
         String filePath=fileData.get().getFilePath();
         byte[] images = Files.readAllBytes(new File(filePath).toPath());
         return images;

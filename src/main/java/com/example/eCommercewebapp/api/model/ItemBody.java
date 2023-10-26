@@ -12,7 +12,7 @@ public class ItemBody {
     private String brand;
     private String price;
     private String discount;
-    private String catageory;
+    private String category;
     private String details;
     private long quantity;
 

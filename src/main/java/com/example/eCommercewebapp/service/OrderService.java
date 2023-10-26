@@ -9,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service
 public class OrderService {
@@ -53,17 +54,21 @@ public class OrderService {
         return null;
     }
 
-    if ("admin".equals(user.getRole())) {
+    else if ("admin".equals(user.getRole())) {
         existingOrder.setStatus(orderBody.getStatus());
+          orderDAO.save(existingOrder);
+        return existingOrder;
     } else if ("customer".equals(user.getRole())) {
         existingOrder.setStatus(orderBody.getStatus());
         existingOrder.setQuantity(orderBody.getQuantity());
+          orderDAO.save(existingOrder);
+        return existingOrder;
     } else {
         return null;
     }
 
-    orderDAO.save(existingOrder);
-    return existingOrder;
+
+
 
     }
 
@@ -81,6 +86,28 @@ public Order deleteUserOrder(User user, OrderBody orderBody) {
         return null;
     }
 }
+
+//    public List<Order> changeAllStatus(User user, List<OrderBody> orderBodyList) {
+//        List<Order> updatedOrders = new ArrayList<>();
+//
+//        for (OrderBody orderBody : orderBodyList) {
+//            // You may need to perform validation, authorization, and more complex logic here
+//            // For simplicity, let's assume you have the Order and Item classes defined.
+//
+//            Order order = orderDAO.findById(orderBody.getId()).orElse(null);
+//
+//            if (order != null) {
+//                order.setQuantity(orderBody.getQuantity());
+//                order.setItem(orderBody.getItem());
+//                order.setStatus(orderBody.getStatus());
+//
+//                // Save the updated order
+//                updatedOrders.add(orderDAO.save(order));
+//            }
+//        }
+//
+//        return updatedOrders;
+//    }
 
 
 

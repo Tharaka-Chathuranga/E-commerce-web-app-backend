@@ -17,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/item")
+@CrossOrigin( "http://localhost:5173")
 public class ItemController {
 
     private final ItemService itemService;
@@ -46,10 +47,10 @@ public class ItemController {
 
     }
 
-//    @GetMapping("/catageory/{catageoryName}")
-//    public List<Item> getCatageoryList(@PathVariable String catageoryName){
-//        return
-//    }
+    @GetMapping("/categeory/{categoryName}")
+    public List<Item> getCatageoryList(@PathVariable String categoryName){
+        return itemService.getCatageoryList(categoryName);
+    }
 
     @GetMapping("/getAllItems")
     public List<Item> getAllItems(){
