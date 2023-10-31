@@ -1,6 +1,7 @@
 package com.example.eCommercewebapp.api.controller.item;
 
 import com.example.eCommercewebapp.api.model.ItemBody;
+import com.example.eCommercewebapp.api.model.ItemSavedBody;
 import com.example.eCommercewebapp.exception.ItemAlreadyExistsException;
 import com.example.eCommercewebapp.model.Item;
 import com.example.eCommercewebapp.model.User;
@@ -56,6 +57,17 @@ public class ItemController {
     public List<Item> getAllItems(){
 
         return itemService.getItems();
+    }
+
+    @PutMapping("/createSavedItem")
+    public Item createSavedItem(@AuthenticationPrincipal User user,@Valid @RequestBody ItemSavedBody itemSavedBody){
+        return itemService.createUserSavedItem(user, itemSavedBody);
+    }
+
+
+    @PutMapping("/deleteSavedItem")
+    public Item deleteSavedItem(@AuthenticationPrincipal User user,@Valid @RequestBody ItemSavedBody itemSavedBody){
+        return itemService.deleteUserSavedItem(user, itemSavedBody);
     }
 }
 

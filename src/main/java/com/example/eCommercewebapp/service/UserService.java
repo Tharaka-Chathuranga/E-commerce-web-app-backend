@@ -79,6 +79,7 @@ public class UserService {
             exsistingUser.setFirstname(userDetailsEditBody.getFirstname());
             exsistingUser.setLastname(userDetailsEditBody.getLastname());
             exsistingUser.setAddress(userDetailsEditBody.getAddress());
+            exsistingUser.setTelephone(userDetailsEditBody.getTelephone());
 
             userDAO.save(exsistingUser);
             return exsistingUser;

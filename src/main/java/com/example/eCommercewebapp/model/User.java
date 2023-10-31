@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Entity
@@ -44,11 +46,22 @@ public class User {
     @Column(name="createdDate")
     private LocalDate createdDate;
 
-
+    @Column(name = "telephone")
+    private Long telephone;
 
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
+    @JsonIgnore
+@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+@JoinTable(
+    name = "savedItems",
+    joinColumns = @JoinColumn(name = "user_id"),
+    inverseJoinColumns = @JoinColumn(name = "item_id")
+)
+
+private Set<Item> savedItems = new HashSet<>();
 
 
     @OneToOne(cascade = CascadeType.ALL)

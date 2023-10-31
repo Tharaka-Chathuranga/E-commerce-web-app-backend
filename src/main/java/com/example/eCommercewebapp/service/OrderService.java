@@ -74,40 +74,47 @@ public class OrderService {
 
 public Order deleteUserOrder(User user, OrderBody orderBody) {
     System.out.println(orderBody.getId());
-    // Find the existing order by ID
+
     Order existingOrder = orderDAO.findById(orderBody.getId()).orElse(null);
 
     if (existingOrder != null) {
-        // Delete the existing order from the database
+
         orderDAO.delete(existingOrder);
         return existingOrder;
     } else {
-        // Order not found, return null
+
         return null;
     }
 }
 
-//    public List<Order> changeAllStatus(User user, List<OrderBody> orderBodyList) {
-//        List<Order> updatedOrders = new ArrayList<>();
-//
-//        for (OrderBody orderBody : orderBodyList) {
-//            // You may need to perform validation, authorization, and more complex logic here
-//            // For simplicity, let's assume you have the Order and Item classes defined.
-//
-//            Order order = orderDAO.findById(orderBody.getId()).orElse(null);
-//
-//            if (order != null) {
-//                order.setQuantity(orderBody.getQuantity());
-//                order.setItem(orderBody.getItem());
-//                order.setStatus(orderBody.getStatus());
-//
-//                // Save the updated order
-//                updatedOrders.add(orderDAO.save(order));
-//            }
-//        }
-//
-//        return updatedOrders;
-//    }
+
+
+
+
+
+    public List<Order> changeAllStatus(User user, List<OrderBody> orderBodyList) {
+        List<Order> updatedOrders = new ArrayList<>();
+
+        for (OrderBody orderBody : orderBodyList) {
+            // You may need to perform validation, authorization, and more complex logic here
+            // For simplicity, let's assume you have the Order and Item classes defined.
+
+            Order order = orderDAO.findById(orderBody.getId()).orElse(null);
+
+            if (order != null) {
+                order.setQuantity(orderBody.getQuantity());
+                order.setItem(orderBody.getItem());
+                order.setStatus(orderBody.getStatus());
+
+                // Save the updated order
+                updatedOrders.add(orderDAO.save(order));
+            }
+        }
+
+        return updatedOrders;
+    }
+
+
 
 
 

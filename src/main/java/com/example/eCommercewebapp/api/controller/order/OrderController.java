@@ -51,17 +51,17 @@ public class OrderController {
 
         }
     }
-//    @PutMapping("/changeAllStatus")
-//    public ResponseEntity<List<Order>> changeAllStatus(
-//        @AuthenticationPrincipal User user,
-//        @RequestBody List<OrderBody> orderBodyList
-//    ) {
-//        List<Order> updatedOrders = orderService.changeAllStatus(user, orderBodyList);
-//
-//        if (updatedOrders.isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-//        } else {
-//            return ResponseEntity.ok(updatedOrders);
-//        }
-//    }
+    @PutMapping("/changeAllStatus")
+    public ResponseEntity<List<Order>> changeAllStatus(
+        @AuthenticationPrincipal User user,
+        @RequestBody List<OrderBody> orderBodyList
+    ) {
+        List<Order> updatedOrders = orderService.changeAllStatus(user, orderBodyList);
+
+        if (updatedOrders.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        } else {
+            return ResponseEntity.ok(updatedOrders);
+        }
+    }
 }

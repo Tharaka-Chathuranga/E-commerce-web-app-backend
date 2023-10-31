@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "Items")
@@ -52,4 +54,6 @@ public class Item {
     @JoinColumn(name = "file_data_id")
     private FileData fileData;
 
+    @ManyToMany(mappedBy = "savedItems")
+    private Set<User> savedByUsers = new HashSet<>();
 }
