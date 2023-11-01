@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -84,5 +85,22 @@ public class UserService {
             userDAO.save(exsistingUser);
             return exsistingUser;
         }
+    }
+
+    public List<User> getTodayUser(){
+        LocalDate date = LocalDate.now();
+        Optional<List<User>> todayUser = userDAO.findByCreatedDateAndRole(date,"customer");
+        if (todayUser != null){
+            return todayUser.get();
+        }
+        return null;
+    }
+
+        public List<User> getAllCustomers(){
+        Optional<List<User>> optionalCustomers = userDAO.findByRole("customer");
+        if (optionalCustomers != null){
+            return optionalCustomers.get();
+        }
+        return null;
     }
 }

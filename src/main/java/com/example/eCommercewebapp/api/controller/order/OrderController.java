@@ -64,4 +64,29 @@ public class OrderController {
             return ResponseEntity.ok(updatedOrders);
         }
     }
+
+
+    @GetMapping("/getTodayOrders")
+    public ResponseEntity<List<Order>> getTodayOrders(@AuthenticationPrincipal User user){
+
+        if ("admin".equals(user.getRole())) {
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(orderService.getTodayOrders());
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+
+    @GetMapping("/getAllOrders")
+    public ResponseEntity<List<Order>> getAllOrders(@AuthenticationPrincipal User user){
+        if ("admin".equals(user.getRole())) {
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(orderService.getAllOrders());
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+
 }

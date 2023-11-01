@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -115,6 +116,18 @@ public Order deleteUserOrder(User user, OrderBody orderBody) {
     }
 
 
+
+        public List<Order> getTodayOrders(){
+        LocalDate date = LocalDate.now();
+        Optional<List<Order>> todayOrders = orderDAO.findByDate(date);
+        if (todayOrders != null){
+            return todayOrders.get();
+        }
+        return null;
+    }
+    public List<Order> getAllOrders(){
+        return orderDAO.findByStatusOrStatus("Purchased","Delivered").get();
+    }
 
 
 

@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/user")
 @CrossOrigin( "http://localhost:5173")
@@ -50,4 +52,25 @@ public class UserController {
         }
     }
 
+    @GetMapping("/getTodayUsers")
+    public ResponseEntity<List<User>> getTodayUsers(@AuthenticationPrincipal User user){
+        System.out.println(user.getRole());
+        if ("admin".equals(user.getRole())) {
+            System.out.println("ho");
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(userService.getTodayUser());
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+
+    @GetMapping("/getAllCustomers")
+     public ResponseEntity<List<User>> getAllCustomers(@AuthenticationPrincipal User user){
+
+        if ("admin".equals(user.getRole())) {
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(userService.getAllCustomers());
+        }
+        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
 }

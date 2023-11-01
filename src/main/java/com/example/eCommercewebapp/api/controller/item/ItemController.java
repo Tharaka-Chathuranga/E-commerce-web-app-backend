@@ -28,14 +28,14 @@ public class ItemController {
     }
 
     @PostMapping("/createItem")
-    public ResponseEntity createItem(@AuthenticationPrincipal User user, @Valid @RequestBody ItemBody itemBody){
+    public ResponseEntity<Item> createItem(@AuthenticationPrincipal User user, @Valid @RequestBody ItemBody itemBody){
         System.out.println(user.getRole());
         if (user.getRole().equalsIgnoreCase("admin")){
             try {
 
-                itemService.createItem(itemBody);
+                Item item =itemService.createItem(itemBody);
 
-                return ResponseEntity.ok().build();
+                return ResponseEntity.status(HttpStatus.OK).body(item);
 
                 }
             catch(ItemAlreadyExistsException ex){
