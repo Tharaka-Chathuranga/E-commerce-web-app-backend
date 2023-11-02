@@ -1,5 +1,6 @@
 package com.example.eCommercewebapp.api.controller.item;
 
+import com.example.eCommercewebapp.api.model.EditItemBody;
 import com.example.eCommercewebapp.api.model.ItemBody;
 import com.example.eCommercewebapp.api.model.ItemSavedBody;
 import com.example.eCommercewebapp.exception.ItemAlreadyExistsException;
@@ -69,5 +70,24 @@ public class ItemController {
     public Item deleteSavedItem(@AuthenticationPrincipal User user,@Valid @RequestBody ItemSavedBody itemSavedBody){
         return itemService.deleteUserSavedItem(user, itemSavedBody);
     }
+
+    @DeleteMapping("/deleteItem/{id}")
+    public void deleteItem(@AuthenticationPrincipal User user, @PathVariable Long id) {
+        System.out.println(user.getRole()+"jiii");
+        if ("admin".equals(user.getRole())) {
+           Item item =itemService.deleteItem(id);
+        }
+
+
+    }
+
+    @PutMapping("/editItem")
+    public Item editItem(@AuthenticationPrincipal User user,@Valid @RequestBody EditItemBody edititemBody){
+         if ("admin".equals(user.getRole())) {
+             return itemService.editItem(edititemBody);}
+
+         return null;
+    }
+
 }
 

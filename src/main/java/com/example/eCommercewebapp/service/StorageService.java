@@ -1,6 +1,7 @@
 package com.example.eCommercewebapp.service;
 
 
+import com.example.eCommercewebapp.api.model.DeleteFileBody;
 import com.example.eCommercewebapp.model.FileData;
 import com.example.eCommercewebapp.model.ImageData;
 import com.example.eCommercewebapp.model.Item;
@@ -138,6 +139,19 @@ public class StorageService {
             userDAO.save(exsistingUser);
             fileDataDAO.deleteById(fileData.getId());
 
+            return "Image Remove Successfully";
+        }
+        return "Image Remove Unsuccessfully";
+
+    }
+
+        public String deleteImage(DeleteFileBody deleteFileBody){
+        FileData fileData = fileDataDAO.findById(deleteFileBody.getFileId()).get();
+        if (fileData != null) {
+            Item existingItem = itemDAO.findById(deleteFileBody.getItemId()).get();
+            existingItem.setFileData(null);
+            itemDAO.save(existingItem);
+            fileDataDAO.deleteById(fileData.getId());
             return "Image Remove Successfully";
         }
         return "Image Remove Unsuccessfully";

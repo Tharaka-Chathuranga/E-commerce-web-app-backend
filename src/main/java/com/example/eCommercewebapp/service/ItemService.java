@@ -1,10 +1,13 @@
 package com.example.eCommercewebapp.service;
 
+import com.example.eCommercewebapp.api.model.EditItemBody;
 import com.example.eCommercewebapp.api.model.ItemBody;
 import com.example.eCommercewebapp.api.model.ItemSavedBody;
 import com.example.eCommercewebapp.exception.ItemAlreadyExistsException;
+import com.example.eCommercewebapp.model.FileData;
 import com.example.eCommercewebapp.model.Item;
 import com.example.eCommercewebapp.model.User;
+import com.example.eCommercewebapp.model.dao.FileDataDAO;
 import com.example.eCommercewebapp.model.dao.ItemDAO;
 import com.example.eCommercewebapp.model.dao.UserDAO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,12 @@ public class ItemService {
 
     private final ItemDAO itemDAO;
     private final UserDAO userDAO;
+    private  final FileDataDAO fileDataDAO;
     @Autowired
-    public ItemService(ItemDAO itemDAO, UserDAO userDAO) {
+    public ItemService(ItemDAO itemDAO, UserDAO userDAO, FileDataDAO fileDataDAO) {
         this.itemDAO = itemDAO;
         this.userDAO = userDAO;
+        this.fileDataDAO = fileDataDAO;
     }
 
     public List<Item> getItems(){
@@ -97,6 +102,41 @@ public Item deleteUserSavedItem(User user, ItemSavedBody itemSavedBody) {
 
     return null;
 }
+
+    public Item deleteItem(Long id){
+        Item item = itemDAO.findById(id).get();
+        if(item != null){
+            FileData fileData = fileDataDAO.findById(item.getFileData().getId()).get();
+
+            if(fileData != null){
+                fileDataDAO.delete(fileData);
+            }
+            itemDAO.delete(item);
+            return item;
+        }
+        return null;
+
+    }
+
+    public Item editItem(EditItemBody editItemBody){
+        Item existingItem  = itemDAO.findById(editItemBody.getId()).get();
+        if(existingItem != null){
+
+            existingItem.setName(editItemBody.getName());
+            existingItem.setBrand(editItemBody.getBrand());
+            existingItem.setPrice(editItemBody.getPrice());
+            existingItem.setDetails(editItemBody.getDetails());
+            existingItem.setDiscount(editItemBody.getDiscount());
+            existingItem.setCategory(editItemBody.getCategory());
+            existingItem.setQuantity(editItemBody.getQuantity());
+            itemDAO.save(existingItem);
+
+            return existingItem;
+
+        }
+
+        return null;
+    }
 
 
 }

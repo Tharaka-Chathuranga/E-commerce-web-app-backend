@@ -1,6 +1,7 @@
 package com.example.eCommercewebapp.api.controller.image;
 
 
+import com.example.eCommercewebapp.api.model.DeleteFileBody;
 import com.example.eCommercewebapp.model.FileData;
 import com.example.eCommercewebapp.model.User;
 import com.example.eCommercewebapp.service.StorageService;
@@ -65,6 +66,18 @@ public class ImageController {
 		return ResponseEntity.status(HttpStatus.OK)
 				.contentType(MediaType.valueOf("image/png"))
 				.body(imageData);
+
+	}
+
+	@PutMapping("/deleteImage")
+	public ResponseEntity<?> deleteImage(@AuthenticationPrincipal User user, @RequestBody DeleteFileBody deleteFileBody){
+		 if ("admin".equals(user.getRole())) {
+			 String response = service.deleteImage(deleteFileBody);
+			 return ResponseEntity.status(HttpStatus.OK)
+				.body(response);
+		 }
+		return ResponseEntity.status(HttpStatus.OK)
+				.body("Can not process request");
 
 	}
 
