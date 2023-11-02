@@ -138,5 +138,9 @@ public Item deleteUserSavedItem(User user, ItemSavedBody itemSavedBody) {
         return null;
     }
 
+    public Item getItem(Long id){
+        return itemDAO.findById(id).get();
+    }
+
 
 }

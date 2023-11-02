@@ -1,6 +1,7 @@
 package com.example.eCommercewebapp.api.controller.item;
 
 import com.example.eCommercewebapp.api.model.EditItemBody;
+import com.example.eCommercewebapp.api.model.GetItemBody;
 import com.example.eCommercewebapp.api.model.ItemBody;
 import com.example.eCommercewebapp.api.model.ItemSavedBody;
 import com.example.eCommercewebapp.exception.ItemAlreadyExistsException;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/item")
@@ -87,6 +89,18 @@ public class ItemController {
              return itemService.editItem(edititemBody);}
 
          return null;
+    }
+
+    @PostMapping("/getItem")
+    public ResponseEntity<Item> getItem(@RequestBody GetItemBody getItemBody) {
+            Item item = itemService.getItem(getItemBody.getId());
+
+        if (item != null) {
+            return ResponseEntity.status(HttpStatus.OK)
+				.body(item);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
 }
